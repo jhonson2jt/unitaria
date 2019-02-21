@@ -1,61 +1,125 @@
-<project>
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>tdg</groupId>
-  <artifactId>bogotobogo_JenkinsOnEC2</artifactId>
-  <packaging>jar</packaging>
-  <version>212.0-SNAPSHOT</version>
+<? xml version = " 1.0 " encoding = " UTF-8 " ?>
+<! -
+   Copyright (c) 2009, 2018 Mountainminds GmbH & Co. KG y colaboradores
+   Todos los derechos reservados. Este programa y los materiales que lo acompañan.
+   están disponibles bajo los términos de la licencia pública de Eclipse v1.0
+   que acompaña a esta distribución, y está disponible en
+   http://www.eclipse.org/legal/epl-v10.html
+   Contribuyentes:
+      Evgeny Mandrikov - API inicial e implementación
+->
+< project  xmlns = " http://maven.apache.org/POM/4.0.0 "  xmlns : xsi = " http://www.w3.org/2001/XMLSchema-instance "  xsi : schemaLocation = " http: / /maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd " >
+  < modelVersion > 4.0.0 </ modelVersion >
 
-  <properties>
-    <maven.compiler.source>7</maven.compiler.source>
-    <maven.compiler.target>7</maven.compiler.target>
-  </properties>
+  < padre >
+    < groupId > org.jacoco </ groupId >
+    < artifactId > org.jacoco.build </ artifactId >
+    < version > 0.8.3-SNAPSHOT </ version >
+    < relativePath > ../ org.jacoco.build </ relativePath >
+  </ padre >
 
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.11</version>
-    </dependency>
-  </dependencies>
+  < artifactId > jacoco </ artifactId >
+  < embalaje > pom </ embalaje >
 
- <build>
-  <plugins>
-    <plugin>
-      <groupId>org.jacoco</groupId>
-      <artifactId>jacoco-maven-plugin</artifactId>
-      <version>0.7.8</version>
-      <executions>
-        <execution>
-          <id>pre-unit-test</id>
-          <goals>
-            <goal>prepare-agent</goal>
-          </goals>
-        </execution>
-        <execution>
-          <id>post-unit-test</id>
-          <phase>test</phase>
-          <goals>
-            <goal>report</goal>
-          </goals>
-        </execution>
-      </executions>
-    </plugin>
-  </plugins>
- </build>
-  
-  <distributionManagement>
-	<repository>
-		<id>deployment</id>
-		<name>Internal Releases</name>
-		<url>http://35.154.238.151:8081/repository/maven-releases/</url>
-	</repository>
- 
-	<snapshotRepository>
-		<id>deployment</id>
-		<name>Internal Releases</name>
-		<url>http://35.154.238.151:8081/repository/maven-snapshots/</url>
-	</snapshotRepository>
+  < nombre > JaCoCo :: Distribución </ nombre >
+  < descripción > Distribución independiente JaCoCo </ descripción >
 
-</distributionManagement>
-  
-</project>
+  < dependencias >
+    < dependencia >
+      < groupId > $ {project.groupId} </ groupId >
+      < artifactId > org.jacoco.core </ artifactId >
+    </ dependencia >
+    < dependencia >
+      < groupId > $ {project.groupId} </ groupId >
+      < artifactId > org.jacoco.report </ artifactId >
+    </ dependencia >
+    < dependencia >
+      < groupId > $ {project.groupId} </ groupId >
+      < artifactId > org.jacoco.agent </ artifactId >
+    </ dependencia >
+    < dependencia >
+      < groupId > $ {project.groupId} </ groupId >
+      < artifactId > org.jacoco.agent </ artifactId >
+      < version > $ {project.version} </ version >
+      < clasificador > tiempo de ejecución </ clasificador >
+    </ dependencia >
+    < dependencia >
+      < groupId > $ {project.groupId} </ groupId >
+      < artifactId > org.jacoco.ant </ artifactId >
+    </ dependencia >
+    < dependencia >
+      < groupId > $ {project.groupId} </ groupId >
+      < artifactId > org.jacoco.ant </ artifactId >
+      < clasificador > nodeps </ clasificador >
+    </ dependencia >
+    < dependencia >
+      < groupId > $ {project.groupId} </ groupId >
+      < artifactId > org.jacoco.cli </ artifactId >
+      < version > $ {project.version} </ version >
+      < clasificador > nodeps </ clasificador >
+    </ dependencia >
+    < dependencia >
+      < groupId > $ {project.groupId} </ groupId >
+      < artifactId > org.jacoco.examples </ artifactId >
+      < version > $ {project.version} </ version >
+      < tipo > zip </ tipo >
+    </ dependencia >
+    < dependencia >
+      < groupId > $ {project.groupId} </ groupId >
+      < artifactId > org.jacoco.doc </ artifactId >
+      < version > $ {project.version} </ version >
+      < clasificador > javadoc </ clasificador >
+    </ dependencia >
+  </ dependencias >
+
+  < construir >
+    < sourceDirectory > src </ sourceDirectory >
+
+    < plugins >
+      < plugin >
+        < groupId > org.apache.maven.plugins </ groupId >
+        < artifactId > maven-assembly-plugin </ artifactId >
+        < ejecuciones >
+          < ejecución >
+            < fase > paquete </ fase >
+            < objetivos >
+              < goal > single </ goal >
+            </ objetivos >
+            < configuración >
+              < finalName > jacoco- $ { Qualified.bundle.version } </ finalName >
+              < appendAssemblyId > false </ appendAssemblyId >
+              < descriptores >
+                < descriptor > assembly.xml </ descriptor >
+              </ descriptores >
+            </ configuración >
+          </ ejecución >
+        </ ejecuciones >
+      </ plugin >
+
+      < plugin >
+        < groupId > org.apache.maven.plugins </ groupId >
+        < artifactId > maven-enforcer-plugin </ artifactId >
+        < ejecuciones >
+          < ejecución >
+            < id > enforce-distribution-size </ id >
+            < objetivos >
+              < objetivo > hacer cumplir </ objetivo >
+            </ objetivos >
+            < fase > verificar </ fase >
+            < configuración >
+              < reglas >
+                < requireFilesSize >
+                  < tamaño máximo > 4300000 </ tamaño máximo >
+                  < minsize > 3400000 </ minsize >
+                  < archivos >
+                    < archivo > $ {project.build.directory} / jacoco- $ { Qualified.bundle.version } .zip </ file >
+                  </ archivos >
+                </ requireFilesSize >
+              </ rules >
+            </ configuración >
+          </ ejecución >
+        </ ejecuciones >
+      </ plugin >
+    </ plugins >
+  </ construir >
+</ proyecto >
