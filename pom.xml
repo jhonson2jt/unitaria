@@ -1,6 +1,6 @@
 <properties>
   <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
-  <sonar.jacoco.reportPath>/../target/jacoco.exec</sonar.jacoco.reportPath>
+  <sonar.jacoco.reportPath>target/jacoco.exec</sonar.jacoco.reportPath>
   <sonar.language>java</sonar.language>
 </properties>
 <dependencies>
